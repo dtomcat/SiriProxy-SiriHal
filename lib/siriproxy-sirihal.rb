@@ -134,7 +134,7 @@ class SiriProxy::Plugin::SiriHal < SiriProxy::Plugin
 	end
 
 	def send_to_house(send_type, send_device, send_action)
-		$webDevice = send_device
+		$webDevice = send_device.rstrip
 		if($webDevice.include? " ")
 			$webDevice = $webDevice.gsub(" ","%20")
     		end
