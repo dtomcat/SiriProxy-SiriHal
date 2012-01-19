@@ -138,7 +138,7 @@ class SiriProxy::Plugin::SiriHal < SiriProxy::Plugin
 		if($webDevice.include? " ")
 			$webDevice = $webDevice.gsub(" ","%20")
     		end
-		say "One moment while I connect to your house..."
+		#say "One moment while I connect to your house..."
 		Thread.new {
 			begin
 				Timeout::timeout(20) do
@@ -149,7 +149,7 @@ class SiriProxy::Plugin::SiriHal < SiriProxy::Plugin
 				request_completed
 			end
 			if($status["Return"]["ResponseSummary"]["StatusCode"] == 0) #successful
-				say "House Connection Successful"
+				#say "House Connection Successful"
 				if(send_type == "DEVICE") #Lights, etc.
 					if(send_action == "ON")
 						say "The " + $status["Return"]["Results"]["Device"]["Device"] + " has been turned on!"
