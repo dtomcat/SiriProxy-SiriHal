@@ -144,6 +144,7 @@ class SiriProxy::Plugin::SiriHal < SiriProxy::Plugin
 				$status = JSON.parse(open(URI("#{self.url}?TYPE=#{send_type}&ITEM=#{$webDevice}&ACTION=#{send_action}")).read)
 				end
 			rescue Timeout::Error
+				puts "[Warning - HAL2000] Unable to connect to the Siri Hal Server."
 				say "Sorry, I was unable to connect to your house"
 				request_completed
 			end
@@ -154,34 +155,43 @@ class SiriProxy::Plugin::SiriHal < SiriProxy::Plugin
 						say "The " + $status["Return"]["Results"]["Device"]["Device"] + " has been turned on!"
 						request_completed
 					elsif(send_action == "OFF")
+						puts "[Info - HAL2000] #{$status["Return"]["Results"]["Device"]["Device"]} has been turned off"
 						say "The " + $status["Return"]["Results"]["Device"]["Device"] + " has been turned off!"
 						request_completed
 					else
+						puts "[Info - HAL2000] Device status request: #{$status["Return"]["Results"]["Device"]["Device"]} - #{$status["Return"]["Results"]["Device"]["Status"]}"
 						say "The " + $status["Return"]["Results"]["Device"]["Device"] + " is currently " + $status["Return"]["Results"]["Device"]["Status"]
 						request_completed
 					end
 				elsif(send_type == "SENSOR")
+					puts "[Info - HAL2000] Sensor status request: #{$status["Return"]["Results"]["Device"]["Device"]}, #{$status["Return"]["Results"]["Device"]["Status"]}"
 					say "The " + $status["Return"]["Results"]["Device"]["Device"] + "'s sensor state is currently " + $status["Return"]["Results"]["Device"]["Status"]
 					request_completed
 				elsif(send_type == "SCENE")
+					puts "[Info - HAL2000] #{$status["Return"]["Results"]["Device"]["Device"]} scene has been set"
 					say "The scene has been set to " + $status["Return"]["Results"]["Device"]["Device"]
 					request_completed
 				elsif(send_type == "GROUP")
 					if(send_action == "ON")
+						puts "[Info - HAL2000] #{$status["Return"]["Results"]["Device"]["Device"]} has been turned on"
 						say "The group " + $status["Return"]["Results"]["Device"]["Device"] + " has been turned on"
 						request_completed
 					else
+						puts "[Info - HAL2000] Sensor status request: #{$status["Return"]["Results"]["Device"]["Device"]} has been turned off"
 						say "The group " + $status["Return"]["Results"]["Device"]["Device"] + " has been turned off"
 						request_completed
 					end
 				elsif(send_type == "MACRO")
+					puts "[Info - HAL2000] #{$status["Return"]["Results"]["Device"]["Device"]} macro has been run"
 					say "The " + $status["Return"]["Results"]["Device"]["Device"] + " macro has been run"
 					request_completed
 				else
+					puts "[WARNING - HAL2000] The Siri Hal Server has been Shutdown.  Restart Siri Hal Server to use this plugin"
 					say "The Siri Hal Server has been Shutdown!"
 					request_completed
 				end
 			else
+				puts "[WARNING - HAL2000] Error occured: #{$status["Return"]["ResponseSummary"]["ErrorMessage"]}"
 				say "Sorry, there was an error, " + $status["Return"]["ResponseSummary"]["ErrorMessage"]
 				request_completed
 			end
