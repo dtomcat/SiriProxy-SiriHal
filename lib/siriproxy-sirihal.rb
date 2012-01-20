@@ -138,7 +138,6 @@ class SiriProxy::Plugin::SiriHal < SiriProxy::Plugin
 		if($webDevice.include? " ")
 			$webDevice = $webDevice.gsub(" ","%20")
     		end
-		#say "One moment while I connect to your house..."
 		Thread.new {
 			begin
 				Timeout::timeout(20) do
@@ -149,34 +148,43 @@ class SiriProxy::Plugin::SiriHal < SiriProxy::Plugin
 				request_completed
 			end
 			if($status["Return"]["ResponseSummary"]["StatusCode"] == 0) #successful
-				#say "House Connection Successful"
 				if(send_type == "DEVICE") #Lights, etc.
 					if(send_action == "ON")
 						say "The " + $status["Return"]["Results"]["Device"]["Device"] + " has been turned on!"
+						request_completed
 					elsif(send_action == "OFF")
 						say "The " + $status["Return"]["Results"]["Device"]["Device"] + " has been turned off!"
+						request_completed
 					else
 						say "The " + $status["Return"]["Results"]["Device"]["Device"] + " is currently " + $status["Return"]["Results"]["Device"]["Status"]
+						request_completed
 					end
 				elsif(send_type == "SENSOR")
 					say "The " + $status["Return"]["Results"]["Device"]["Device"] + "'s sensor state is currently " + $status["Return"]["Results"]["Device"]["Status"]
+					request_completed
 				elsif(send_type == "SCENE")
 					say "The scene has been set to " + $status["Return"]["Results"]["Device"]["Device"]
+					request_completed
 				elsif(send_type == "GROUP")
 					if(send_action == "ON")
 						say "The group " + $status["Return"]["Results"]["Device"]["Device"] + " has been turned on"
+						request_completed
 					else
 						say "The group " + $status["Return"]["Results"]["Device"]["Device"] + " has been turned off"
+						request_completed
 					end
 				elsif(send_type == "MACRO")
 					say "The " + $status["Return"]["Results"]["Device"]["Device"] + " macro has been run"
+					request_completed
 				else
 					say "The Siri Hal Server has been Shutdown!"
+					request_completed
 				end
 			else
 				say "Sorry, there was an error, " + $status["Return"]["ResponseSummary"]["ErrorMessage"]
+				request_completed
 			end
-			request_completed
+			
 		}
 	end
 end
