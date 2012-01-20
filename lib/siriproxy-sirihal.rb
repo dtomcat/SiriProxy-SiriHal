@@ -150,6 +150,7 @@ class SiriProxy::Plugin::SiriHal < SiriProxy::Plugin
 			if($status["Return"]["ResponseSummary"]["StatusCode"] == 0) #successful
 				if(send_type == "DEVICE") #Lights, etc.
 					if(send_action == "ON")
+						puts "[Info - HAL2000] #{$status["Return"]["Results"]["Device"]["Device"]} has been turned on"
 						say "The " + $status["Return"]["Results"]["Device"]["Device"] + " has been turned on!"
 						request_completed
 					elsif(send_action == "OFF")
