@@ -4,11 +4,11 @@ $:.push File.expand_path("../lib", __FILE__)
 Gem::Specification.new do |s|
   s.name        = "siriproxy-sirihal"
   s.version     = "0.0.1" 
-  s.authors     = ["hagedorn"]
-  s.email       = ["dtomcat@hotmial.com"]
+  s.authors     = ["Robert Hagedorn"]
+  s.email       = ["dtomcat@hotmail.com"]
   s.homepage    = "http://google.com"
   s.summary     = %q{HAL2000 Home Automation Plugin}
-  s.description = %q{This plugin accepts commands and send them to HAL2000}
+  s.description = %q{This plugin accepts commands and sends them to HAL2000}
 
   s.rubyforge_project = "siriproxy-sirihal"
 
