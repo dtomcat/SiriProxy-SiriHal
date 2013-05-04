@@ -7,4 +7,5 @@
     
     - name: 'SiriHal'
       git: 'git://github.com/dtomcat/SiriProxy-SiriHal.git'
-      url: 'http://yourHALpcipaddress:8085/SiriHal/' 
+      url: 'http://yourHALpcipaddress:8085/SiriHal/'
+      therm: 'Default Thermostat'
