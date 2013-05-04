@@ -198,4 +198,70 @@ class SiriProxy::Plugin::SiriHal < SiriProxy::Plugin
 			
 		}
 	end
+	def send_temp_house(send_type, send_device, send_action, extra_action)
+		$webDevice = send_device.rstrip
+		if($webDevice.include? " ")
+			$webDevice = $webDevice.gsub(" ","%20")
+    		end
+    		$extraAction = extra_action.rstrip
+		if($extraAction.include? " ")
+			$ExtraAction = $extraAction.gsub(" ","%20")
+    		end
+		Thread.new {
+			begin
+				if(send_action == "SetMode")
+					Timeout::timeout(20) do
+					$status = JSON.parse(open(URI("#{self.url}?TYPE=#{send_type}&ITEM=#{$webDevice}&ACTION=#{send_action}&Mode=#{$extraAction}")).read)
+					end
+				else
+					Timeout::timeout(20) do
+					$status = JSON.parse(open(URI("#{self.url}?TYPE=#{send_type}&ITEM=#{$webDevice}&ACTION=#{send_action}&Temp=#{$extraAction}")).read)
+					end
+				end
+			rescue Timeout::Error
+				puts "[Warning - HAL2000] Unable to connect to the Siri Hal Server."
+				say "Sorry, I was unable to connect to your house"
+				request_completed
+			end
+			if($status["Return"]["ResponseSummary"]["StatusCode"] == 0) #successful
+				if(send_type == "STAT") #Lights, etc.
+					if(send_action == "GetTemp")
+						puts "[Info - HAL2000] #{$status["Return"]["Results"]["Device"]["Device"]} current temp: #{$status["Return"]["Results"]["Device"]["Status"]}"
+						say "The " + $status["Return"]["Results"]["Device"]["Device"] + " shows a temperature of " + $status["Return"]["Results"]["Device"]["Status"] + " Degrees Fahrenheit!"
+						request_completed
+					elsif(send_action == "GetMode")
+						puts "[Info - HAL2000] #{$status["Return"]["Results"]["Device"]["Device"]} Mode: #{$status["Return"]["Results"]["Device"]["Status"]}"
+						say "The " + $status["Return"]["Results"]["Device"]["Device"] + " has been turned off!"
+						request_completed
+					elsif(send_action == "SetMode")
+						puts "[Info - HAL2000] #{$status["Return"]["Results"]["Device"]["Device"]} mode set to #{$status["Return"]["Results"]["Device"]["Status"]}"
+						say "The " + $status["Return"]["Results"]["Device"]["Device"] + " mode has been set to " + $status["Return"]["Results"]["Device"]["Status"]
+						request_completed
+					elsif(send_action == "SetHeatTemp")
+						puts "[Info - HAL2000] #{$status["Return"]["Results"]["Device"]["Device"]} Heat Setpoint set to #{$status["Return"]["Results"]["Device"]["Status"]}"
+						say "The " + $status["Return"]["Results"]["Device"]["Device"] + " heating set point has been set to " + $status["Return"]["Results"]["Device"]["Status"] + " degrees fahrenheit!"
+						request_completed
+					elsif(send_action == "SetCoolTemp")
+						puts "[Info - HAL2000] #{$status["Return"]["Results"]["Device"]["Device"]} Cool Setpoint set to #{$status["Return"]["Results"]["Device"]["Status"]}"
+						say "The " + $status["Return"]["Results"]["Device"]["Device"] + " cooling set point has been set to " + $status["Return"]["Results"]["Device"]["Status"] + " degrees fahrenheit!"
+						request_completed
+					elsif(send_action == "GetHeatTemp")
+						puts "[Info - HAL2000] #{$status["Return"]["Results"]["Device"]["Device"]} Heat Setpoint is: #{$status["Return"]["Results"]["Device"]["Status"]}"
+						say "The " + $status["Return"]["Results"]["Device"]["Device"] + " heating set point is " + $status["Return"]["Results"]["Device"]["Status"] + " degrees fahrenheit!"
+						request_completed
+					elsif(send_action == "SetCoolTemp")
+						puts "[Info - HAL2000] #{$status["Return"]["Results"]["Device"]["Device"]} Cool Setpoint is: #{$status["Return"]["Results"]["Device"]["Status"]}"
+						say "The " + $status["Return"]["Results"]["Device"]["Device"] + " cooling set point is " + $status["Return"]["Results"]["Device"]["Status"] + " degrees fahrenheit!"
+						request_completed
+					end
+				end
+			else
+				puts "[WARNING - HAL2000] Error occured: #{$status["Return"]["ResponseSummary"]["ErrorMessage"]}"
+				say "Sorry, there was an error, " + $status["Return"]["ResponseSummary"]["ErrorMessage"]
+				request_completed
+			end
+
+
+		}
+	end
 end
