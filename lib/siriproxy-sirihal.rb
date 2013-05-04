@@ -122,6 +122,12 @@ class SiriProxy::Plugin::SiriHal < SiriProxy::Plugin
 	listen_for(/What is the(?:current )? temperature of(?:the )? (.*)/i) do |qDevice|
 		send_temp_house("STAT",qDevice,"GetTemp","0")
 	end
+	listen_for(/What is the(?:current )? mode of(?:the )? (.*)/i) do |qDevice|
+		send_temp_house("STAT",qDevice,"GetMode","0")
+	end
+	listen_for(/Set(?:the )?(?:current )? mode of(?:the )? (.*) to (.*) mode/i) do |qDevice,qMode|
+		send_temp_house("STAT",qDevice,"SetMode",qMode)
+	end
 	
 	#Shutdown Command
 	listen_for(/Shutdown the Siri server/i) do
