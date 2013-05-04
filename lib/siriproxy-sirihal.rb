@@ -137,10 +137,10 @@ class SiriProxy::Plugin::SiriHal < SiriProxy::Plugin
 	listen_for(/Set(?: the)?(?: current)? mode of(?: the)? (.*) to (.*) mode/i) do |qDevice,qMode|
 		send_temp_house("STAT",qDevice,"SetMode",qMode)
 	end
-	listen_for(/Set(?: the)? heating setpoint of(?: the)? (.*) to ([0-9,]*[0-9]) degrees/i) do |qDevice,qTemp|
+	listen_for(/Set(?: the)? heating setpoint of(?: the)? (.*) to ([0-9,]*[0-9])/i) do |qDevice,qTemp|
 		send_temp_house("STAT",qDevice,"SetHeatTemp",qTemp)
 	end
-	listen_for(/Set(?: the)? cooling setpoint of(?: the)? (.*) to ([0-9,]*[0-9]) degrees/i) do |qDevice,qTemp|
+	listen_for(/Set(?: the)? cooling setpoint of(?: the)? (.*) to ([0-9,]*[0-9])/i) do |qDevice,qTemp|
 		send_temp_house("STAT",qDevice,"SetCoolTemp",qTemp)
 	end
 	#Shutdown Command
