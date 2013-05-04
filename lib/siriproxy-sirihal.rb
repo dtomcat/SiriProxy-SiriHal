@@ -116,12 +116,13 @@ class SiriProxy::Plugin::SiriHal < SiriProxy::Plugin
 		send_to_house("MACRO",qDevice,"RUN")
 	end
 	#HVAC Commands
-	listen_for(/What is the current temperature in the house/i) do
+	listen_for(/What is the(?:current )? temperature in the house/i) do
 		send_temp_house("STAT",self.therm,"GetTemp","0")
 	end
-	listen_for(/What is the temperature of(?:the )? (.*)/i) do |qDevice|
+	listen_for(/What is the(?:current )? temperature of(?:the )? (.*)/i) do |qDevice|
 		send_temp_house("STAT",qDevice,"GetTemp","0")
 	end
+	
 	#Shutdown Command
 	listen_for(/Shutdown the Siri server/i) do
 		response = ask "Are you sure you want to shut down the server?" #ask the user for something
