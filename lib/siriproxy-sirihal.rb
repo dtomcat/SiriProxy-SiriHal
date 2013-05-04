@@ -247,7 +247,7 @@ class SiriProxy::Plugin::SiriHal < SiriProxy::Plugin
 						request_completed
 					elsif(send_action == "GetMode")
 						puts "[Info - HAL2000] #{$status["Return"]["Results"]["Device"]["Device"]} Mode: #{$status["Return"]["Results"]["Device"]["Status"]}"
-						say "The " + $status["Return"]["Results"]["Device"]["Device"] + " has been turned off!"
+						say "The current mode of the " + $status["Return"]["Results"]["Device"]["Device"] + " is set to " + $status["Return"]["Results"]["Device"]["Status"] + " mode!"
 						request_completed
 					elsif(send_action == "SetMode")
 						puts "[Info - HAL2000] #{$status["Return"]["Results"]["Device"]["Device"]} mode set to #{$status["Return"]["Results"]["Device"]["Status"]}"
