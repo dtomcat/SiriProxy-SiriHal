@@ -7,9 +7,11 @@ require 'pp'
 
 class SiriProxy::Plugin::SiriHal < SiriProxy::Plugin
 	attr_accessor :url
-
+        attr_accessor :therm
+        
 	def initialize(config = {})
 	self.url = config["url"]
+	self.therm = config["therm"]
 	end
 
 	$status = nil
@@ -112,6 +114,13 @@ class SiriProxy::Plugin::SiriHal < SiriProxy::Plugin
 	end
 	listen_for(/Start the macro (.*)/i) do |qDevice|
 		send_to_house("MACRO",qDevice,"RUN")
+	end
+	#HVAC Commands
+	listen_for(/What is the current temperature in the house/i) do
+		send_temp_house("STAT",self.therm,"GetTemp",0)
+	end
+	listen_for(/What is the temperature of the (.*)/i) do |qDevice|
+		send_to_house("STAT",qDevice,"GetTemp",0)
 	end
 	#Shutdown Command
 	listen_for(/Shutdown the Siri server/i) do
