@@ -120,7 +120,7 @@ class SiriProxy::Plugin::SiriHal < SiriProxy::Plugin
 		send_temp_house("STAT",self.therm,"GetTemp","0")
 	end
 	listen_for(/What is the temperature of the (.*)/i) do |qDevice|
-		send_to_house("STAT",qDevice,"GetTemp","0")
+		send_temp_house("STAT",qDevice,"GetTemp","0")
 	end
 	#Shutdown Command
 	listen_for(/Shutdown the Siri server/i) do
