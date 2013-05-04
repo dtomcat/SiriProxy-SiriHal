@@ -291,7 +291,7 @@ class SiriProxy::Plugin::SiriHal < SiriProxy::Plugin
 						puts "[Info - HAL2000] #{$status["Return"]["Results"]["Device"]["Device"]} Heat Setpoint is: #{$status["Return"]["Results"]["Device"]["Status"]}"
 						say "The " + $status["Return"]["Results"]["Device"]["Device"] + " heating set point is " + $status["Return"]["Results"]["Device"]["Status"] + " degrees fahrenheit!"
 						request_completed
-					elsif(send_action == "SetCoolTemp")
+					elsif(send_action == "GetCoolTemp")
 						puts "[Info - HAL2000] #{$status["Return"]["Results"]["Device"]["Device"]} Cool Setpoint is: #{$status["Return"]["Results"]["Device"]["Status"]}"
 						say "The " + $status["Return"]["Results"]["Device"]["Device"] + " cooling set point is " + $status["Return"]["Results"]["Device"]["Status"] + " degrees fahrenheit!"
 						request_completed
