@@ -125,10 +125,24 @@ class SiriProxy::Plugin::SiriHal < SiriProxy::Plugin
 	listen_for(/What is the(?: current)? mode of(?: the)? (.*)/i) do |qDevice|
 		send_temp_house("STAT",qDevice,"GetMode","0")
 	end
+	listen_for(/What's the(?: current)? temperature in the house/i) do
+		send_temp_house("STAT",self.therm,"GetTemp","0")
+	end
+	listen_for(/What's the(?: current)? temperature of(?: the)? (.*)/i) do |qDevice|
+		send_temp_house("STAT",qDevice,"GetTemp","0")
+	end
+	listen_for(/What's the(?: current)? mode of(?: the)? (.*)/i) do |qDevice|
+		send_temp_house("STAT",qDevice,"GetMode","0")
+	end
 	listen_for(/Set(?: the)?(?: current)? mode of(?: the)? (.*) to (.*) mode/i) do |qDevice,qMode|
 		send_temp_house("STAT",qDevice,"SetMode",qMode)
 	end
-	
+	listen_for(/Set(?: the)? heating set point of(?: the)? (.*) to ([0-9,]*[0-9]) degrees/i) do |qDevice,qTemp|
+		send_temp_house("STAT",qDevice,"SetHeatTemp",qTemp)
+	end
+	listen_for(/Set(?: the)? cooling set point of(?: the)? (.*) to ([0-9,]*[0-9]) degrees/i) do |qDevice,qTemp|
+		send_temp_house("STAT",qDevice,"SetCoolTemp",qTemp)
+	end
 	#Shutdown Command
 	listen_for(/Shutdown the Siri server/i) do
 		response = ask "Are you sure you want to shut down the server?" #ask the user for something
