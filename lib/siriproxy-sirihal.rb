@@ -119,7 +119,7 @@ class SiriProxy::Plugin::SiriHal < SiriProxy::Plugin
 	listen_for(/What is the current temperature in the house/i) do
 		send_temp_house("STAT",self.therm,"GetTemp","0")
 	end
-	listen_for(/What is the temperature of the (.*)/i) do |qDevice|
+	listen_for(/What is the temperature of(?:the )? (.*)/i) do |qDevice|
 		send_temp_house("STAT",qDevice,"GetTemp","0")
 	end
 	#Shutdown Command
